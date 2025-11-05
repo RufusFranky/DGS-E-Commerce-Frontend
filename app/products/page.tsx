@@ -30,7 +30,7 @@ export default function ProductsPage() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch("http://localhost:4000/products");
+        const res = await fetch("https://hotbray-backend.onrender.com/products");
         const data = await res.json();
         setProducts(data);
         setFilteredProducts(data);
