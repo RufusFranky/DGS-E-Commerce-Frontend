@@ -1,0 +1,91 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+img {
+  margin: auto;
+}
+
+footer {
+  background-color: white !important;
+  color: black;
+}
+
+.increment-button {
+  background-color: #155dfc;
+  border-radius: 5px;
+}
+
+.decrement-button {
+  background-color: #155dfc;
+  border-radius: 5px;
+}
+
+span{
+  color: black;
+}
+
+.cart-Count{
+  color: white;
+}
+
+.model_btn:hover{
+  cursor: pointer;  
+}
+
+.fotter_links a:hover{
+  color: #155dfc;
+}
+
+.Search_bar{
+  color: #000;
+}
+
+.ShopNow_btn:hover{
+  cursor: pointer;
+}
+
+h1 span{
+  color: #155dfc;
+}
+
+input{
+  color: #666666 !important;
+}
+
+input::placeholder {
+  color: #afafaf !important;
+}
+
+select{
+  color: #6d6d6d;
+}
+
+.logo{
+  color: #0c4395;
+}
