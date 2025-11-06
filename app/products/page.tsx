@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCart } from "../context/CartContext";
+import { API_BASE_URL } from "@/utils/api";
 
 interface Product {
   id: number;
@@ -30,7 +31,9 @@ export default function ProductsPage() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch("https://hotbray-backend.onrender.com/products");
+        const res = await fetch(`${API_BASE_URL}/products`, {
+          cache: "no-store",
+        });
         const data = await res.json();
         setProducts(data);
         setFilteredProducts(data);
@@ -87,7 +90,7 @@ export default function ProductsPage() {
 
   return (
     <main className="min-h-screen bg-gray-50 py-10 px-6 md:px-16">
-            {/* ✅ Banner Section */}
+      {/* ✅ Banner Section */}
       <section className="relative w-full h-[300px] md:h-[400px] mb-10">
         <Image
           src="/product_banner.png"

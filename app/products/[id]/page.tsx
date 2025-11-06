@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import Image from "next/image";
 import { useCart } from "../../context/CartContext";
 import Link from "next/link";
+import { API_BASE_URL } from "@/utils/api";
 
 interface Product {
   id: number;
@@ -28,7 +29,7 @@ export default function ProductDetailPage() {
 
     const fetchProduct = async () => {
       try {
-        const res = await fetch(`https://hotbray-backend.onrender.com/products/${id}`);
+          const res = await fetch(`${API_BASE_URL}/products`, { cache: "no-store" });
         if (!res.ok) throw new Error("Product not found");
         const data = await res.json();
         setProduct(data);

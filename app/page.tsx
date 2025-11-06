@@ -3,6 +3,7 @@ import Image from "next/image";
 import Carousel from "./componets/Carousel";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { API_BASE_URL } from "@/utils/api";
 
 interface Product {
   id: number;
@@ -22,7 +23,9 @@ export default function Home() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch("https://hotbray-backend.onrender.com/products");
+        const res = await fetch(`${API_BASE_URL}/products`, {
+          cache: "no-store",
+        });
         const data = await res.json();
         setProducts(data.slice(0, 4)); // show only top 4 featured products
       } catch (err) {
