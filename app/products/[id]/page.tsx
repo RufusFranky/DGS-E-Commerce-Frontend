@@ -1,9 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import { useCart } from "../../context/CartContext";
-import Link from "next/link";
 import { API_BASE_URL } from "@/utils/api";
 
 interface Product {
@@ -16,8 +15,9 @@ interface Product {
   part_number: string;
 }
 
-export default function ProductDetailPage() {
+export default function ProductDetailModal() {
   const { id } = useParams();
+  const router = useRouter();
   const { addToCart } = useCart();
 
   const [product, setProduct] = useState<Product | null>(null);
@@ -29,7 +29,7 @@ export default function ProductDetailPage() {
 
     const fetchProduct = async () => {
       try {
-          const res = await fetch(`${API_BASE_URL}/products`, { cache: "no-store" });
+        const res = await fetch(`${API_BASE_URL}/products/${id}`, { cache: "no-store" });
         if (!res.ok) throw new Error("Product not found");
         const data = await res.json();
         setProduct(data);
@@ -46,74 +46,83 @@ export default function ProductDetailPage() {
 
   if (loading)
     return (
-      <p className="text-center mt-10 text-gray-600">Loading product...</p>
-    );
-
-  if (error)
-    return (
-      <div className="text-center mt-10">
-        <p className="text-red-500 mb-4">{error}</p>
-        <Link href="/products" className="text-blue-600 underline">
-          Back to Products
-        </Link>
+      <div className="fixed inset-0 bg-opacity-40 flex items-center justify-center z-50">
+        <div className="bg-white p-8 rounded-lg shadow-lg">
+          <p className="text-gray-600">Loading product...</p>
+        </div>
       </div>
     );
 
-  if (!product)
+  if (error || !product)
     return (
-      <div className="text-center mt-10">
-        <p className="text-gray-500">No product data available.</p>
-        <Link href="/products" className="text-blue-600 underline">
-          Back to Products
-        </Link>
+      <div className="fixed inset-0 bg-opacity-40 flex items-center justify-center z-50">
+        <div className="bg-white p-8 rounded-lg shadow-lg text-center">
+          <p className="text-red-500 mb-4">
+            {error || "No product data available."}
+          </p>
+          <button
+            onClick={() => router.back()}
+            className="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-md text-gray-700"
+          >
+            Back to Products
+          </button>
+        </div>
       </div>
     );
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 md:px-10">
-      <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-6 flex flex-col md:flex-row gap-8 mt-10">
-        {/* 🖼 Product Image */}
-        <div className="flex-shrink-0 w-full md:w-1/2 relative h-80">
-          <Image
-            src={product.image}
-            alt={product.name}
-            width={200}
-            height={200}
-            className="object-cover rounded-lg"
-          />
-        </div>
+    <div className="fixed inset-0 bg-black/60 bg-opacity-40 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-3xl relative">
+        {/* Close button */}
+        <button
+          onClick={() => router.back()}
+          className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-2xl"
+        >
+          ✕
+        </button>
 
-        {/* 🧾 Product Details */}
-        <div className="flex-1">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">
-            {product.name}
-          </h1>
-          <p className="text-lg text-gray-600 mb-2">
-            <span className="font-semibold">Price:</span> ${product.price}
-          </p>
-          <p className="text-gray-600 mb-2">
-            <span className="font-semibold">Category:</span> {product.category}
-          </p>
-          <p className="text-gray-600 mb-2">
-            <span className="font-semibold">Part Number:</span>{" "}
-            {product.part_number}
-          </p>
-          <p className="text-gray-600 mb-6">{product.description}</p>
+        {/* Product layout */}
+        <div className="flex flex-col md:flex-row gap-8">
+          {/* Image */}
+          <div className="w-full md:w-1/2 flex items-center justify-center">
+            <Image
+              src={product.image}
+              alt={product.name}
+              width={300}
+              height={300}
+              className="rounded-lg object-cover shadow-md"
+            />
+          </div>
 
-          <div className="flex gap-4">
-            <button
-              onClick={() => addToCart(product)}
-              className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition"
-            >
-              Add to Cart
-            </button>
+          {/* Details */}
+          <div className="flex-1">
+            <h1 className="text-2xl font-bold text-gray-900 mb-3">{product.name}</h1>
+            <p className="text-lg text-gray-600 mb-2">
+              <span className="font-semibold">Price:</span> ${product.price}
+            </p>
+            <p className="text-gray-600 mb-2">
+              <span className="font-semibold">Category:</span> {product.category}
+            </p>
+            <p className="text-gray-600 mb-2">
+              <span className="font-semibold">Part Number:</span>{" "}
+              {product.part_number}
+            </p>
+            <p className="text-gray-600 mb-6">{product.description}</p>
 
-            <Link
-              href="/products"
-              className="bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-6 rounded-lg transition"
-            >
-              Back to Products
-            </Link>
+            <div className="flex gap-4 mt-4">
+              <button
+                onClick={() => addToCart(product)}
+                className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition"
+              >
+                Add to Cart
+              </button>
+              <button
+                onClick={() => router.back()}
+                className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-2 px-6 rounded-lg transition"
+              >
+                Back to Products
+              </button>
+            </div>
           </div>
         </div>
       </div>

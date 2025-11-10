@@ -95,12 +95,13 @@ export default function ProductsPage() {
         <Image
           src="/product_banner.png"
           alt="Products Banner"
-          fill
-          className=" rounded-lg"
+          width={1100}
+          height={200}
+          className="rounded-lg object-cover"
         />
       </section>
 
-      {/* Filters Section */}
+      {/* ✅ Filters Section */}
       <div className="flex flex-col md:flex-row items-center gap-4 mb-10 justify-between">
         {/* Search */}
         <input
@@ -142,7 +143,7 @@ export default function ProductsPage() {
         </button>
       </div>
 
-      {/* Products Grid */}
+      {/* ✅ Products Grid */}
       {loading ? (
         <p className="text-center text-gray-600">Loading products...</p>
       ) : filteredProducts.length === 0 ? (
@@ -159,7 +160,7 @@ export default function ProductsPage() {
                 onClick={() => router.push(`/products/${product.id}`)}
               >
                 <Image
-                  src={product.image}
+                  src={product.image || "/placeholder.png"}
                   alt={product.name}
                   width={200}
                   height={200}

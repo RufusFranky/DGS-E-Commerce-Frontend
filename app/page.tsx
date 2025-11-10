@@ -27,7 +27,7 @@ export default function Home() {
           cache: "no-store",
         });
         const data = await res.json();
-        setProducts(data.slice(0, 4)); // show only top 4 featured products
+        setProducts(data.slice(0, 4));
       } catch (err) {
         console.error("Error fetching products:", err);
       } finally {
@@ -40,19 +40,16 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="bg-white text-center py-15 px-4">
-        <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900">
-          Welcome to <span className="logo">HOTBRAY</span>
-        </h1>
-        <p className="text-lg text-gray-600 mb-8">
-          Discover amazing deals and authentic products — all in one place!
-        </p>
-        <button
-          onClick={() => router.push("/products")}
-          className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition ShopNow_btn"
-        >
-          Shop Now
-        </button>
+      <section className="bg-white text-center mt-5">
+      {/* ✅ Banner Section */}
+      {/* <section className="relative w-full h-[300px] md:h-[500px]">
+        <Image
+          src="/home_banner.png"
+          alt="Products Banner"
+          fill
+          className="home_banner"
+        />
+      </section> */}
       </section>
 
       {/* Carousel Section */}
@@ -87,10 +84,10 @@ export default function Home() {
                 </h3>
                 <p className="text-gray-600">${product.price}</p>
                 <button
-                  onClick={() => router.push(`/products/${product.id}`)}
+                  onClick={() => router.push(`/products`)}
                   className="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition ShopNow_btn"
                 >
-                  View Product
+                  View Products
                 </button>
               </div>
             ))}

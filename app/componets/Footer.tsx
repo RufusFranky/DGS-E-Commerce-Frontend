@@ -4,7 +4,7 @@ export default function Footer() {
       <div className=" mx-auto px-9 flex flex-col md:flex-row justify-between items-center">
         {/* Left side */}
         <div className="text-center md:text-left mb-4 md:mb-0">
-          <h2 className="text-xl font-semibold logo">HOTBRAY</h2>
+          <h2 className="text-xl font-semibold logo">DGSTECH</h2>
           {/* <p className="text-sm mt-2">
             &copy; {new Date().getFullYear()} HOTBRAY. All rights reserved.
           </p> */}
@@ -22,7 +22,7 @@ export default function Footer() {
       {/* Bottom border */}
       <div className="mt-6 border-t border-white-700 pt-4 text-center text-sm">
                   <p className=" mt-2">
-            &copy; {new Date().getFullYear()} HOTBRAY. All rights reserved.
+            &copy; {new Date().getFullYear()} DGSTECH. All rights reserved.
           </p>
       </div>
     </footer>

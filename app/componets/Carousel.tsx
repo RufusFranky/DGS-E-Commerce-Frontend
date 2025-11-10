@@ -33,7 +33,7 @@ export default function Carousel() {
   },);
 
   return (
-    <div className="relative w-full max-w-8xl mx-auto mt-10 overflow-hidden shadow-lg">
+    <div className="relative w-full max-w-8xl mx-auto mt-5 overflow-hidden shadow-lg">
       {/* Slide Images */}
       <div
         className="flex transition-transform duration-700 ease-in-out"
@@ -44,9 +44,9 @@ export default function Carousel() {
             <Image
               src={slide.image}
               alt={slide.caption}
-              width={1200}
+              width={500}
               height={500}
-              className="object-cover w-full h-64 md:h-96"
+              className="object-cover w-full h-64 md:h-100"
             />
             <div className="absolute inset-0 bg-opacity-40 flex items-center justify-center">
               <h2 className="text-white text-2xl md:text-4xl font-semibold">
