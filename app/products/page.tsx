@@ -45,7 +45,7 @@ export default function ProductsPage() {
     };
     fetchProducts();
   }, []);
-
+  
   // ✅ Apply all filters
   useEffect(() => {
     let filtered = [...products];

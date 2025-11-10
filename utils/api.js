@@ -1,14 +1,14 @@
-const getBaseUrl = () => {
-  if (typeof window !== "undefined") {
-    // Check current environment
-    if (window.location.hostname === "localhost") {
-      return process.env.NEXT_PUBLIC_API_URL;
-    } else {
-      return process.env.NEXT_PUBLIC_API_URL_PROD;
-    }
-  }
-  // For SSR / build time
-  return process.env.NEXT_PUBLIC_API_URL_PROD;
-};
+// utils/api.js
 
-export const API_BASE_URL = getBaseUrl();
+// ✅ Automatically picks the correct backend URL
+export const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL_PROD ||
+  process.env.NEXT_PUBLIC_API_URL ||
+  "http://localhost:4000";
+
+// ✅ Optional: quick debug (you can remove later)
+if (typeof window !== "undefined") {
+  console.log("🌐 API Base URL in browser:", API_BASE_URL);
+} else {
+  console.log("🖥️ API Base URL on server:", API_BASE_URL);
+}
