@@ -5,9 +5,6 @@ export default function Footer() {
         {/* Left side */}
         <div className="text-center md:text-left mb-4 md:mb-0">
           <h2 className="text-xl font-semibold logo">DGSTECH</h2>
-          {/* <p className="text-sm mt-2">
-            &copy; {new Date().getFullYear()} HOTBRAY. All rights reserved.
-          </p> */}
         </div>
 
         {/* Right side */}
