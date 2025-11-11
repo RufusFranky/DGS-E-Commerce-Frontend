@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { useCart } from "../../context/CartContext";
 
+// ✅ Define the props interface
 interface Product {
   id: number;
   name: string;
@@ -17,6 +18,7 @@ interface ProductDetailModalProps {
   onClose: () => void;
 }
 
+// ✅ Component definition
 export default function ProductDetailModal({ product, onClose }: ProductDetailModalProps) {
   const { addToCart } = useCart();
 
@@ -27,9 +29,9 @@ export default function ProductDetailModal({ product, onClose }: ProductDetailMo
     >
       <div
         className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-3xl relative"
-        onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside modal
+        onClick={(e) => e.stopPropagation()}
       >
-        {/* ✕ Close button */}
+        {/* Close button */}
         <button
           onClick={onClose}
           className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-2xl"
@@ -39,7 +41,7 @@ export default function ProductDetailModal({ product, onClose }: ProductDetailMo
 
         {/* Product layout */}
         <div className="flex flex-col md:flex-row gap-8">
-          {/* Product Image */}
+          {/* Image */}
           <div className="w-full md:w-1/2 flex items-center justify-center">
             <Image
               src={product.image || "/placeholder.png"}
@@ -50,25 +52,20 @@ export default function ProductDetailModal({ product, onClose }: ProductDetailMo
             />
           </div>
 
-          {/* Product Details */}
+          {/* Details */}
           <div className="flex-1">
             <h1 className="text-2xl font-bold text-gray-900 mb-3">{product.name}</h1>
-
             <p className="text-lg text-gray-600 mb-2">
               <span className="font-semibold">Price:</span> ${product.price}
             </p>
-
             <p className="text-gray-600 mb-2">
               <span className="font-semibold">Category:</span> {product.category}
             </p>
-
             <p className="text-gray-600 mb-2">
               <span className="font-semibold">Part Number:</span> {product.part_number}
             </p>
-
             <p className="text-gray-600 mb-6">{product.description}</p>
 
-            {/* Buttons */}
             <div className="flex gap-4 mt-4">
               <button
                 onClick={() => addToCart(product)}
