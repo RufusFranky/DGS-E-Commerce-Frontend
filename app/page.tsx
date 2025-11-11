@@ -39,19 +39,6 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <section className="bg-white text-center mt-5">
-      {/* ✅ Banner Section */}
-      {/* <section className="relative w-full h-[300px] md:h-[500px]">
-        <Image
-          src="/home_banner.png"
-          alt="Products Banner"
-          fill
-          className="home_banner"
-        />
-      </section> */}
-      </section>
-
       {/* Carousel Section */}
       <Carousel />
 

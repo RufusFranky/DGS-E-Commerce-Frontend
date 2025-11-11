@@ -29,7 +29,7 @@ export default function ProductsPage() {
   const [loading, setLoading] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
-  // ✅ Fetch products from backend
+  //Fetch products from backend
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -48,7 +48,7 @@ export default function ProductsPage() {
     fetchProducts();
   }, []);
 
-  // ✅ Apply all filters
+  //Apply all filters
   useEffect(() => {
     let filtered = [...products];
 
@@ -77,7 +77,7 @@ export default function ProductsPage() {
     setFilteredProducts(filtered);
   }, [searchTerm, category, priceSort, products]);
 
-  // ✅ Clear all filters
+  // Clear all filters
   const clearFilters = () => {
     setSearchTerm("");
     setCategory("");
@@ -85,14 +85,14 @@ export default function ProductsPage() {
     setFilteredProducts(products);
   };
 
-  // ✅ Handle Add to Cart
+  //Handle Add to Cart
   const handleAddToCart = (product: Product) => {
     addToCart(product);
   };
 
   return (
     <main className="min-h-screen bg-gray-50 py-10 px-6 md:px-16">
-      {/* ✅ Banner Section */}
+      {/* Banner Section */}
       <section className="relative w-full h-[300px] md:h-[400px] mb-10">
         <Image
           src="/product_banner.png"
@@ -103,7 +103,7 @@ export default function ProductsPage() {
         />
       </section>
 
-      {/* ✅ Filters Section */}
+      {/* Filters Section */}
       <div className="flex flex-col md:flex-row items-center gap-4 mb-10 justify-between">
         {/* Search */}
         <input
@@ -145,7 +145,7 @@ export default function ProductsPage() {
         </button>
       </div>
 
-      {/* ✅ Products Grid */}
+      {/* Products Grid */}
       {loading ? (
         <p className="text-center text-gray-600">Loading products...</p>
       ) : filteredProducts.length === 0 ? (
