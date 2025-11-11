@@ -116,3 +116,7 @@ select{
 .nav a{
   color: #0c4395;
 }
+
+.increment-decrement-button:hover{
+  cursor: pointer;
+}

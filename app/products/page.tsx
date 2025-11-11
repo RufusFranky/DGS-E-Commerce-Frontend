@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCart } from "../context/CartContext";
 import { API_BASE_URL } from "@/utils/api";
+import ProductDetailModal from "./[id]/page";
 
 interface Product {
   id: number;
@@ -26,6 +27,7 @@ export default function ProductsPage() {
   const [category, setCategory] = useState("");
   const [priceSort, setPriceSort] = useState("");
   const [loading, setLoading] = useState(true);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   // ✅ Fetch products from backend
   useEffect(() => {
@@ -45,7 +47,7 @@ export default function ProductsPage() {
     };
     fetchProducts();
   }, []);
-  
+
   // ✅ Apply all filters
   useEffect(() => {
     let filtered = [...products];
@@ -185,7 +187,7 @@ export default function ProductsPage() {
                   Add to Cart
                 </button>
                 <button
-                  onClick={() => router.push(`/products/${product.id}`)}
+                  onClick={() => setSelectedProduct(product)}
                   className="flex-1 border border-gray-300 hover:bg-gray-100 text-gray-700 py-2 rounded-lg transition ShopNow_btn"
                 >
                   View Product
@@ -194,6 +196,12 @@ export default function ProductsPage() {
             </div>
           ))}
         </div>
+      )}
+      {selectedProduct && (
+        <ProductDetailModal
+          product={selectedProduct}
+          onClose={() => setSelectedProduct(null)}
+        />
       )}
     </main>
   );

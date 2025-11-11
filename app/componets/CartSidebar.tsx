@@ -56,14 +56,14 @@ export default function CartModal() {
                   <div className="flex items-center gap-3 mt-2">
                     <button
                       onClick={() => decrementQuantity(item.id)}
-                      className="px-2 py-1 border rounded hover:bg-gray-100"
+                      className="px-2 py-1 rounded text-gray-900 increment-decrement-button"
                     >
                       -
                     </button>
                     <span className="font-medium">{item.quantity}</span>
                     <button
                       onClick={() => incrementQuantity(item.id)}
-                      className="px-2 py-1 border rounded hover:bg-gray-100"
+                      className="px-2 py-1 rounded text-gray-900 increment-decrement-button"
                     >
                       +
                     </button>
