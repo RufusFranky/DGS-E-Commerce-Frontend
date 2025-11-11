@@ -1,8 +1,7 @@
 "use client";
 import Image from "next/image";
-import { useCart } from "../../context/CartContext";
+import { useCart } from "../context/CartContext";
 
-// ✅ Define the props interface
 interface Product {
   id: number;
   name: string;
@@ -18,7 +17,6 @@ interface ProductDetailModalProps {
   onClose: () => void;
 }
 
-// ✅ Component definition
 export default function ProductDetailModal({ product, onClose }: ProductDetailModalProps) {
   const { addToCart } = useCart();
 
@@ -31,7 +29,6 @@ export default function ProductDetailModal({ product, onClose }: ProductDetailMo
         className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-3xl relative"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Close button */}
         <button
           onClick={onClose}
           className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-2xl"
@@ -39,9 +36,7 @@ export default function ProductDetailModal({ product, onClose }: ProductDetailMo
           ✕
         </button>
 
-        {/* Product layout */}
         <div className="flex flex-col md:flex-row gap-8">
-          {/* Image */}
           <div className="w-full md:w-1/2 flex items-center justify-center">
             <Image
               src={product.image || "/placeholder.png"}
@@ -52,7 +47,6 @@ export default function ProductDetailModal({ product, onClose }: ProductDetailMo
             />
           </div>
 
-          {/* Details */}
           <div className="flex-1">
             <h1 className="text-2xl font-bold text-gray-900 mb-3">{product.name}</h1>
             <p className="text-lg text-gray-600 mb-2">

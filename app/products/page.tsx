@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCart } from "../context/CartContext";
 import { API_BASE_URL } from "@/utils/api";
-import ProductDetailModal from "./[id]/page";
+import ProductDetailModal from "./../componets/ProductDetailModal";
 
 interface Product {
   id: number;
