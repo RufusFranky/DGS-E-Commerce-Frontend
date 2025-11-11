@@ -6,7 +6,7 @@ import CartSidebar from "./componets/CartSidebar";
 import Footer from "./componets/Footer";
 
 export const metadata = {
-  title: "HOTBRAY",
+  title: "DGSTECH",
   description: "A simple eCommerce demo with Next.js + Tailwind CSS",
 };
 
