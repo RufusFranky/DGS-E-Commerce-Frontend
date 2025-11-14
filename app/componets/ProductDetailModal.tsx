@@ -62,7 +62,15 @@ export default function ProductDetailModal({ product, onClose }: ProductDetailMo
 
             <div className="flex gap-4 mt-4">
               <button
-                onClick={() => addToCart(product)}
+                onClick={() =>
+                  addToCart({
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    image: product.image,
+                    quantity: 1,
+                  })
+                }
                 className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition"
               >
                 Add to Cart
