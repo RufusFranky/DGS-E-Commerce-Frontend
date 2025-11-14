@@ -1,6 +1,6 @@
 "use client";
 
-import { useUser, useClerk, UserButton } from "@clerk/clerk-react";
+import { useUser, useClerk, UserButton } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { PackageIcon } from "lucide-react";
 
