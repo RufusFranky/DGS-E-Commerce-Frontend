@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useCart } from "../context/CartContext";
 import { API_BASE_URL } from "@/utils/api";
 import ProductDetailModal from "./../componets/ProductDetailModal";
@@ -18,7 +17,6 @@ interface Product {
 }
 
 export default function ProductsPage() {
-  const router = useRouter();
   const { addToCart } = useCart();
 
   const [products, setProducts] = useState<Product[]>([]);
@@ -87,7 +85,8 @@ export default function ProductsPage() {
 
   //Handle Add to Cart
   const handleAddToCart = (product: Product) => {
-    addToCart(product);
+    const cartItem = { ...product, quantity: 1 };
+    addToCart(cartItem);
   };
 
   return (
@@ -159,7 +158,7 @@ export default function ProductsPage() {
             >
               <div
                 className="relative w-full h-56 mb-4 cursor-pointer"
-                onClick={() => router.push(`/products/${product.id}`)}
+                onClick={() => setSelectedProduct(product)}
               >
                 <Image
                   src={product.image || "/placeholder.png"}

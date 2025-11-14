@@ -4,7 +4,7 @@ export default function Footer() {
       <div className=" mx-auto px-9 flex flex-col md:flex-row justify-between items-center">
         {/* Left side */}
         <div className="text-center md:text-left mb-4 md:mb-0">
-          <h2 className="text-xl font-semibold logo">DGSTECH</h2>
+          <h2 className="logo_footer">DGSTECH</h2>
         </div>
 
         {/* Right side */}
@@ -12,7 +12,7 @@ export default function Footer() {
           <a href="./" className="transition">Home</a>
           <a href="./products" className="transition">Product</a>
           <a href="#" className="transition">About</a>
-          <a href="#" className="transition">Contact</a>
+          <a href="./contact" className="transition">Contact</a>
         </div>
       </div>
 

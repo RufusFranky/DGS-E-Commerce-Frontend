@@ -33,7 +33,7 @@ export default function Carousel() {
   },);
 
   return (
-    <div className="relative w-full max-w-8xl mx-auto mt-5 overflow-hidden shadow-lg">
+    <div className="relative w-full max-w-8xl mx-auto overflow-hidden shadow-lg">
       {/* Slide Images */}
       <div
         className="flex transition-transform duration-700 ease-in-out"
@@ -70,21 +70,6 @@ export default function Carousel() {
         ))}
       </div>
 
-      {/* Left / Right Arrows */}
-      <button
-        onClick={() =>
-          setCurrent((prev) => (prev === 0 ? slides.length - 1 : prev - 1))
-        }
-        className="absolute top-1/2 left-3 -translate-y-1/2 bg-white/60 hover:bg-white text-gray-700 p-2 rounded-full"
-      >
-        ‹
-      </button>
-      <button
-        onClick={() => setCurrent((prev) => (prev + 1) % slides.length)}
-        className="absolute top-1/2 right-3 -translate-y-1/2 bg-white/60 hover:bg-white text-gray-700 p-2 rounded-full"
-      >
-        ›
-      </button>
     </div>
   );
 }

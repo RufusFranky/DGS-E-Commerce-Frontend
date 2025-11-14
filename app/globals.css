@@ -87,7 +87,13 @@ select{
 }
 
 .logo{
+  font-size:xx-large;
   color: #0c4395;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.logo_footer{
+  font-size:medium;
 }
 
 @keyframes fadeIn {
@@ -119,4 +125,55 @@ select{
 
 .increment-decrement-button:hover{
   cursor: pointer;
+}
+
+.nav_top, .nav_bottom {
+  height: 10px;
+  background-color: #0c4395;
+}
+
+.nav_links {
+  color: #0c4395;
+  font-size: large;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  transition: all 0.4s ease;
+}
+
+.nav_links:hover {
+  color: #155dfc;
+  letter-spacing: 2px;
+}
+
+.Info_Bar{
+  background-color: #0c4395;
+  font-size: small;
+  color: white;
+}
+
+.Info_Bar span{
+  color: white;
+}
+.login_button{
+  background-color: #0c4395;
+  cursor: pointer;
+} 
+
+.login_button:hover{
+  background-color: #155dfc;
+}
+
+.Phone_div{
+  background-color: #0c4395;
+}
+
+.Email_div{
+  background-color: #0c4395;
+}
+
+.Location_div{
+  background-color: #0c4395;
+}
+
+.Phone_div:hover, .Email_div:hover, .Location_div:hover{
+  background-color: #155dfc;
 }

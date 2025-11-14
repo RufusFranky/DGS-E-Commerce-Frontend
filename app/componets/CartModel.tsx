@@ -1,6 +1,7 @@
 "use client";
 import { useCart } from "../context/CartContext";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function CartModal() {
   const {
@@ -12,7 +13,18 @@ export default function CartModal() {
     toggleCart,
   } = useCart();
 
-  if (!isCartOpen) return null; // Hide when closed
+  const router = useRouter();
+
+  if (!isCartOpen) return null;
+
+  const handleCheckout = () => {
+    if (cartItems.length === 0) {
+      alert("Your cart is empty!");
+      return;
+    }
+    toggleCart(); // Close the cart modal
+    router.push("/checkout"); // Go to checkout page
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
@@ -90,7 +102,12 @@ export default function CartModal() {
                 .reduce((acc, item) => acc + item.price * item.quantity, 0)
                 .toFixed(2)}
             </p>
-            <button className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
+
+            {/*Checkout Button */}
+            <button
+              onClick={handleCheckout}
+              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+            >
               Checkout
             </button>
           </div>
