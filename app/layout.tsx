@@ -4,7 +4,7 @@ import Navbar from "./componets/Navbar";
 import { CartProvider } from "./context/CartContext";
 import CartSidebar from "./componets/CartModel";
 import Footer from "./componets/Footer";
-import { Providers } from "./componets/providers";
+import { Providers } from "./providers";
 
 export const metadata = {
   title: "DGSTECH",
@@ -17,17 +17,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <Providers>
     <html lang="en">
-      <body suppressHydrationWarning={true} className="bg-gray-50 text-gray-900">
-        <CartProvider>
-          <Navbar />
-          <CartSidebar />
-          <main>{children}</main>
-        </CartProvider>
-        <Footer />
+      <body
+        suppressHydrationWarning={true}
+        className="bg-gray-50 text-gray-900"
+      >
+        <Providers>
+          <CartProvider>
+            <Navbar />
+            <CartSidebar />
+            <main>{children}</main>
+          </CartProvider>
+          <Footer />
+        </Providers>
       </body>
     </html>
-    </Providers>
   );
 }
