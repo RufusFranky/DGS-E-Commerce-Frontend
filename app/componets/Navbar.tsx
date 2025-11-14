@@ -5,16 +5,13 @@ import LoginModal from "./LoginModel";
 import { FaClock, FaHeadset, FaPhoneAlt, FaTruck } from "react-icons/fa";
 import dynamic from "next/dynamic";
 
-// ⛔ Clerk components must load only on client
-const ClerkSafe = dynamic(
-  () => import("../NavbarClerk"),
-  { ssr: false }
-);
+const ClerkSafe = dynamic(() => import("../NavbarClerk"), { ssr: false });
 
 export default function Navbar() {
   const { cartItems, toggleCart } = useCart();
   const [showLogin, setShowLogin] = useState(false);
   const [isClient, setIsClient] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
@@ -62,17 +59,22 @@ export default function Navbar() {
         </div>
       </div>
 
-      <nav className="flex items-center justify-between px-8 py-4 bg-white z-50">
+      {/* Main Navbar */}
+      <nav className="flex items-center justify-between px-8 py-4 bg-white relative">
+
+        {/* Logo */}
         <a href="./">
           <h1 className="font-bold logo">DGSTECH</h1>
         </a>
 
+        {/* Desktop menu */}
         <div className="space-x-6 hidden md:flex">
           <a href="./" className="nav_links">Home</a>
           <a href="./products" className="nav_links">Products</a>
           <a href="./contact" className="nav_links">Contact</a>
         </div>
 
+        {/* Right items (cart + clerk) */}
         <div className="flex items-center space-x-6">
           {/* Cart */}
           <button onClick={toggleCart} className="relative cursor-pointer">
@@ -90,6 +92,7 @@ export default function Navbar() {
                 d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 9m10-9l2 9m-6 0h4"
               />
             </svg>
+
             {totalItems > 0 && (
               <span className="absolute -top-2 -right-2 bg-blue-600 text-xs text-white rounded-full px-1.5 cart-Count">
                 {totalItems}
@@ -97,8 +100,31 @@ export default function Navbar() {
             )}
           </button>
 
-          {/* Clerk user button is now safe */}
+          {/* Clerk */}
           {isClient && <ClerkSafe />}
+
+          {/* 🍔 Hamburger Menu Button (Mobile) */}
+          <button
+            className="md:hidden flex flex-col space-y-1"
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            <span className={`block h-0.5 w-6 bg-gray-700 transition-all ${menuOpen ? "rotate-45 translate-y-2" : ""}`}></span>
+            <span className={`block h-0.5 w-6 bg-gray-700 transition-all ${menuOpen ? "opacity-0" : ""}`}></span>
+            <span className={`block h-0.5 w-6 bg-gray-700 transition-all ${menuOpen ? "-rotate-45 -translate-y-2" : ""}`}></span>
+          </button>
+        </div>
+
+        {/* Mobile Slide Menu */}
+        <div
+          className={`md:hidden absolute top-full left-0 w-full bg-white shadow-md transition-all duration-300 overflow-hidden ${
+            menuOpen ? "max-h-60 py-4" : "max-h-0"
+          }`}
+        >
+          <div className="flex flex-col items-center space-y-4">
+            <a href="./" className="nav_links text-lg">Home</a>
+            <a href="./products" className="nav_links text-lg">Products</a>
+            <a href="./contact" className="nav_links text-lg">Contact</a>
+          </div>
         </div>
       </nav>
 
