@@ -4,7 +4,7 @@ import Navbar from "./componets/Navbar";
 import { CartProvider } from "./context/CartContext";
 import CartSidebar from "./componets/CartModel";
 import Footer from "./componets/Footer";
-import {ClerkProvider} from '@clerk/nextjs'
+import { Providers } from "./componets/providers";
 
 export const metadata = {
   title: "DGSTECH",
@@ -17,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
+    <Providers>
     <html lang="en">
       <body suppressHydrationWarning={true} className="bg-gray-50 text-gray-900">
         <CartProvider>
@@ -28,6 +28,6 @@ export default function RootLayout({
         <Footer />
       </body>
     </html>
-    </ClerkProvider>
+    </Providers>
   );
 }
