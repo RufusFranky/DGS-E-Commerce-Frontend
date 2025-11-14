@@ -1,27 +1,32 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useCart } from "../context/CartContext";
 import LoginModal from "./LoginModel";
 import { FaClock, FaHeadset, FaPhoneAlt, FaTruck } from "react-icons/fa";
-import { useUser, useClerk, UserButton } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
-import { PackageIcon} from "lucide-react";
+import dynamic from "next/dynamic";
+
+// ⛔ Clerk components must load only on client
+const ClerkSafe = dynamic(
+  () => import("../NavbarClerk"),
+  { ssr: false }
+);
 
 export default function Navbar() {
   const { cartItems, toggleCart } = useCart();
   const [showLogin, setShowLogin] = useState(false);
-  const { user } = useUser();
-  const { openSignIn } = useClerk();
-  const router = useRouter();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
     <div className="sticky top-0 z-50 nav">
-      {/* Info Bar Section */}
+      {/* Info Bar */}
       <div className="py-2 Info_Bar">
         <div className="mx-auto flex flex-wrap justify-center md:justify-between items-center px-9 gap-4">
-          {/* Left: Service Info */}
           <div className="flex flex-wrap justify-center md:justify-start gap-6">
             <div className="flex items-center gap-2">
               <FaClock className="text-white text-sm" />
@@ -41,44 +46,33 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Center: Promotion */}
           <div className="text-center">
             Super Value Deals:
             <a href="./products">
               <strong className="text-white cursor-pointer hover:underline">
-                 Shop Now
+                Shop Now
               </strong>
             </a>
           </div>
 
-          {/* Right: Shipping Info */}
           <div className="flex items-center gap-2">
             <FaTruck className="text-white text-sm" />
             <span>Fast and Free Shipping all over UK</span>
           </div>
         </div>
       </div>
-      {/* <div className="nav_top"></div> */}
+
       <nav className="flex items-center justify-between px-8 py-4 bg-white z-50">
-        {/* Logo */}
         <a href="./">
           <h1 className="font-bold logo">DGSTECH</h1>
         </a>
 
-        {/* Links */}
         <div className="space-x-6 hidden md:flex">
-          <a href="./" className="  nav_links">
-            Home
-          </a>
-          <a href="./products" className=" nav_links">
-            Products
-          </a>
-          <a href="./contact" className=" nav_links">
-            Contact
-          </a>
+          <a href="./" className="nav_links">Home</a>
+          <a href="./products" className="nav_links">Products</a>
+          <a href="./contact" className="nav_links">Contact</a>
         </div>
 
-        {/* Right side buttons */}
         <div className="flex items-center space-x-6">
           {/* Cart */}
           <button onClick={toggleCart} className="relative cursor-pointer">
@@ -103,31 +97,12 @@ export default function Navbar() {
             )}
           </button>
 
-          {/* Login / User Button */}
-          {!user ? (
-            <button
-              onClick={() => openSignIn()}
-              className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
-            >
-              Login
-            </button>
-          ) : (
-            <UserButton afterSignOutUrl="/">
-              <UserButton.MenuItems>
-                <UserButton.Action
-                  labelIcon={<PackageIcon size={16} />}
-                  label="My Orders"
-                  onClick={() => router.push("/orders")}
-                />
-              </UserButton.MenuItems>
-            </UserButton>
-          )}
+          {/* Clerk user button is now safe */}
+          {isClient && <ClerkSafe />}
         </div>
       </nav>
 
-      {/* Popup Modal */}
       {showLogin && <LoginModal onClose={() => setShowLogin(false)} />}
-      {/* <div className="nav_bottom"></div> */}
     </div>
   );
 }
