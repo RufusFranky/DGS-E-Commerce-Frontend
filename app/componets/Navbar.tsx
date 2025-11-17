@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { useCart } from "../context/CartContext";
 import LoginModal from "./LoginModel";
-import { FaClock, FaHeadset, FaPhoneAlt, FaTruck } from "react-icons/fa";
+import { FaClock, FaHeadset, FaTruck } from "react-icons/fa";
 import dynamic from "next/dynamic";
 
 const ClerkSafe = dynamic(() => import("../NavbarClerk"), { ssr: false });
@@ -36,17 +36,12 @@ export default function Navbar() {
               <FaHeadset className="text-white text-sm" />
               <span>Live Chat</span>
             </div>
-
-            <div className="flex items-center gap-2">
-              <FaPhoneAlt className="text-white text-sm" />
-              <span>Call Support</span>
-            </div>
           </div>
 
           <div className="text-center">
             Super Value Deals:
             <a href="./products">
-              <strong className="text-white cursor-pointer hover:underline">
+              <strong className="cursor-pointer hover:underline shop_now">
                 Shop Now
               </strong>
             </a>

@@ -177,3 +177,7 @@ select{
 .Phone_div:hover, .Email_div:hover, .Location_div:hover{
   background-color: #155dfc;
 }
+
+.shop_now{
+  color:yellow;
+}
