@@ -187,7 +187,7 @@ export default function CheckoutPage() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white px-6 py-3 rounded-lg font-medium w-full"
+                className="bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white px-6 py-3 rounded-lg font-medium w-full cursor-pointer"
               >
                 {submitting ? "Processing..." : "Proceed to Payment"}
               </button>
@@ -205,7 +205,7 @@ export default function CheckoutPage() {
                   <div key={it.id} className="flex items-center gap-3">
                     <div className="w-16 h-12 relative">
                       <Image
-                        src={it.image || "/placeholder.png"}
+                        src={it.image}
                         alt={it.name}
                         width={100}
                         height={100}

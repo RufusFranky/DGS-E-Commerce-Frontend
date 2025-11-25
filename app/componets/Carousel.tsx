@@ -67,7 +67,7 @@ export default function FadeCarousel() {
       {slides.map((slide, index) => (
         <div
           key={slide.id}
-          className={`absolute inset-0 transition-opacity duration-[1000ms] ease-in-out ${
+          className={`absolute inset-0 transition-opacity duration-[500ms] ease-in-out ${
             current === index ? "opacity-100" : "opacity-0"
           }`}
         >

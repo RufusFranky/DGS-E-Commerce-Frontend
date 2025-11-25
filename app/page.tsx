@@ -44,7 +44,7 @@ export default function Home() {
 
       {/* Featured Products Section */}
       <section className="py-16 px-6 md:px-16">
-        <h2 className="text-3xl font-semibold text-center mb-10 text-gray-800">
+        <h2 className="text-3xl font-semibold text-center mb-10 featured-products-heading">
           Featured Products
         </h2>
 
@@ -69,10 +69,10 @@ export default function Home() {
                 <h3 className="text-lg font-medium text-gray-900">
                   {product.name}
                 </h3>
-                <p className="text-gray-600">${product.price}</p>
+                <p className="text-gray-600">{product.category}</p>
                 <button
                   onClick={() => router.push(`/products`)}
-                  className="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition ShopNow_btn"
+                  className="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition ShopNow_btn cursor-pointer" 
                 >
                   View Products
                 </button>

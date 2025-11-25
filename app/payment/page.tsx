@@ -248,14 +248,14 @@ export default function PaymentPage() {
         <div className="flex flex-col md:flex-row justify-between gap-4">
           <button
             onClick={() => router.push("/checkout")}
-            className="border border-gray-300 text-gray-700 px-8 py-3 rounded-lg hover:bg-gray-100 transition"
+            className="border border-gray-300 text-gray-700 px-8 py-3 rounded-lg hover:bg-gray-100 transition cursor-pointer"
           >
             ← Back to Checkout
           </button>
 
           <button
             onClick={handlePlaceOrder}
-            className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-medium transition"
+            className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-medium transition cursor-pointer"
           >
             Place Order
           </button>

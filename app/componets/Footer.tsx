@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className=" footer py-8">
+    <footer className="footer py-8">
       <div className=" mx-auto px-9 flex flex-col md:flex-row justify-between items-center">
         {/* Left side */}
         <div className="text-center md:text-left mb-4 md:mb-0">
@@ -11,7 +11,7 @@ export default function Footer() {
         <div className="flex space-x-6 text-sm fotter_links">
           <a href="./" className="transition">Home</a>
           <a href="./products" className="transition">Product</a>
-          <a href="#" className="transition">About</a>
+          {/* <a href="#" className="transition">About</a> */}
           <a href="./contact" className="transition">Contact</a>
         </div>
       </div>

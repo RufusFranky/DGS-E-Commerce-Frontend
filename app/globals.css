@@ -32,49 +32,45 @@ img {
 }
 
 footer {
-  background-color: white !important;
-  color: black;
+  background-color: #0c4395;
+  color: white;
 }
 
 .increment-button {
-  background-color: #155dfc;
+  background-color: #0c4395;
   border-radius: 5px;
 }
 
 .decrement-button {
-  background-color: #155dfc;
+  background-color: #0c4395;
   border-radius: 5px;
 }
 
-span{
+span {
   color: black;
 }
 
-.cart-Count{
+.cart-Count {
   color: white;
 }
 
-.model_btn:hover{
-  cursor: pointer;  
-}
-
-.fotter_links a:hover{
-  color: #155dfc;
-}
-
-.Search_bar{
-  color: #000;
-}
-
-.ShopNow_btn:hover{
+.model_btn:hover {
   cursor: pointer;
 }
 
-h1 span{
+.fotter_links a:hover {
+  text-decoration: underline;
+}
+
+.Search_bar {
+  color: #000;
+}
+
+h1 span {
   color: #155dfc;
 }
 
-input{
+input {
   color: #666666 !important;
 }
 
@@ -82,18 +78,18 @@ input::placeholder {
   color: #afafaf !important;
 }
 
-select{
+select {
   color: #6d6d6d;
 }
 
-.logo{
-  font-size:xx-large;
+.logo {
+  font-size: xx-large;
   color: #0c4395;
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
 }
 
-.logo_footer{
-  font-size:medium;
+.logo_footer {
+  font-size: medium;
 }
 
 @keyframes fadeIn {
@@ -111,23 +107,24 @@ select{
   animation: fadeIn 0.25s ease-out;
 }
 
-.home_banner{
+.home_banner {
   width: 90% !important;
   height: 105% !important;
 }
 
-.navbar{
+.navbar {
   background-color: #ffffff;
 }
-.nav a{
+.nav a {
   color: #0c4395;
 }
 
-.increment-decrement-button:hover{
+.increment-decrement-button:hover {
   cursor: pointer;
 }
 
-.nav_top, .nav_bottom {
+.nav_top,
+.nav_bottom {
   height: 10px;
   background-color: #0c4395;
 }
@@ -135,7 +132,7 @@ select{
 .nav_links {
   color: #0c4395;
   font-size: large;
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   transition: all 0.4s ease;
 }
 
@@ -144,40 +141,144 @@ select{
   letter-spacing: 2px;
 }
 
-.Info_Bar{
+.Info_Bar {
   background-color: #0c4395;
   font-size: small;
   color: white;
 }
 
-.Info_Bar span{
+.Info_Bar span {
   color: white;
 }
-.login_button{
+.login_button {
   background-color: #0c4395;
   cursor: pointer;
-} 
+}
 
-.login_button:hover{
+.login_button:hover {
   background-color: #155dfc;
 }
 
-.Phone_div{
+.Phone_div {
   background-color: #0c4395;
 }
 
-.Email_div{
+.Email_div {
   background-color: #0c4395;
 }
 
-.Location_div{
+.Location_div {
   background-color: #0c4395;
 }
 
-.Phone_div:hover, .Email_div:hover, .Location_div:hover{
+.Phone_div:hover,
+.Email_div:hover,
+.Location_div:hover {
   background-color: #155dfc;
 }
 
-.shop_now{
-  color:yellow;
+.shop_now {
+  color: yellow;
+}
+
+.bulk-upload-section input {
+  border: 2px solid #cdcdcd;
+  padding: 5px;
+  border-radius: 4px;
+}
+
+.fast-order-btn {
+  background-color: #ffffff;
+  color: #0c4395;
+  border: 2px solid #0c4395;
+}
+
+.fast-order-btn:hover {
+  background-color: #0c4395;
+  color: #ffffff;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.login-btn {
+  background-color: #ffffff;
+  color: #0c4395;
+  border: 2px solid #0c4395;
+  margin-right: 0px;
+}
+
+.login-btn:hover {
+  background-color: #0c4395;
+  color: #ffffff;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.cart-icon {
+  color: #0c4395;
+}
+
+.featured-products-heading {
+  color: #0c4395;
+}
+
+.Add_to_Cart_btn,
+.View_Product_btn {
+  background-color: #ffffff;
+  color: #0c4395;
+  border: 1px solid #0c4395;
+}
+
+.Add_to_Cart_btn:hover {
+  background-color: #0c4395;
+  color: #ffffff;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.View_Product_btn:hover {
+  background-color: #0c4395;
+  color: #ffffff;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.search-filter-bar input:hover {
+  border: 1px solid #0c4395;
+}
+
+.category-filter-select:hover {
+  border: 1px solid #0c4395;
+  cursor: pointer;
+}
+
+.price_sort-select:hover {
+  border: 1px solid #0c4395;
+  cursor: pointer;
+}
+
+.back_to_products_btn{
+    background-color: #ffffff;
+  color: #0c4395;
+  border: 1px solid #0c4395;
+}
+
+.back_to_products_btn:hover {
+  background-color: #0c4395;
+  color: #ffffff;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.fast_order{
+  color: #0c4395;
+}
+
+.cart_remove_btn{
+  display: inline;
+  /* margin-left: 10px; */
+}
+
+.cart_product{
+  margin: 0;
 }
