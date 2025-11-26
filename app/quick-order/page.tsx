@@ -439,7 +439,7 @@ export default function QuickOrderPage() {
     <div className="min-h-[80vh] bg-gray-50 py-8 text-black">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold">Fast Order</h1>
+          <h1 className="text-2xl font-bold">Quick Order</h1>
           <div className="flex gap-3">
             <button
               onClick={() => router.push("/cart")}
