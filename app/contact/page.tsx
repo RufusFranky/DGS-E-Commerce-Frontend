@@ -1,7 +1,7 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
-
 import {
   FaPhoneAlt,
   FaEnvelope,
@@ -10,6 +10,9 @@ import {
 } from "react-icons/fa";
 
 export default function ContactPage() {
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+
   return (
     <main className="min-h-screen bg-gray-50 pb-16 text-black">
       {/* Banner Section */}
@@ -87,7 +90,47 @@ export default function ContactPage() {
           <h3 className="text-2xl font-semibold text-gray-800 mb-6 text-center">
             Send Us a Message
           </h3>
-          <form className="space-y-5">
+
+          <form
+            className="space-y-5"
+            onSubmit={async (e) => {
+              e.preventDefault();
+              setLoading(true);
+              setSuccess(false);
+
+              const form = e.target as HTMLFormElement;
+              const formData = new FormData(form);
+
+              const name = formData.get("name");
+              const email = formData.get("email");
+              const message = formData.get("message");
+
+              try {
+                const res = await fetch(
+                  `${process.env.NEXT_PUBLIC_API_BASE_URL}/contact/send`,
+                  {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ name, email, message }),
+                  }
+                );
+
+                const data = await res.json();
+
+                if (data.success) {
+                  form.reset();
+                  setSuccess(true);
+                  setTimeout(() => setSuccess(false), 3000);
+                } else {
+                  throw new Error();
+                }
+              } catch {
+                alert("❌ Message failed. Please try again later.");
+              }
+
+              setLoading(false);
+            }}
+          >
             <input
               type="text"
               name="name"
@@ -112,9 +155,20 @@ export default function ContactPage() {
 
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition cursor-pointer"
+              disabled={loading}
+              className={`w-full py-3 rounded-lg font-semibold transition cursor-pointer 
+                ${loading || success ? "bg-blue-400" : "bg-blue-600 hover:bg-blue-700"} 
+                text-white flex justify-center items-center gap-2`}
             >
-              Send Message
+              {loading && (
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              )}
+
+              {success && (
+                <span className="text-lg animate-pulse">✔ Sent!</span>
+              )}
+
+              {!loading && !success && "Send Message"}
             </button>
           </form>
         </div>
