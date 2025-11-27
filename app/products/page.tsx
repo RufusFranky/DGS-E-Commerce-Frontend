@@ -18,25 +18,32 @@ interface Product {
   part_number: string;
 }
 
+// 🔥 highlight matched part of suggestion
+function highlightMatch(text: string, query: string) {
+  const regex = new RegExp(`(${query})`, "i");
+  return text.replace(regex, `<strong class='text-blue-600'>$1</strong>`);
+}
+
 export default function ProductsPage() {
   const { addToCart } = useCart();
-  const { isSignedIn } = useUser(); // ✅ CHECK LOGIN STATUS
+  const { isSignedIn } = useUser();
 
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [searchResults, setSearchResults] = useState<Product[]>([]); // 🆕
   const [searchTerm, setSearchTerm] = useState("");
+  const [suggestions, setSuggestions] = useState<Product[]>([]);
+  const [activeIndex, setActiveIndex] = useState(-1);
   const [category, setCategory] = useState("");
   const [priceSort, setPriceSort] = useState("");
   const [loading, setLoading] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
-  // Fetch products
+  // 🟢 load all products
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch(`${API_BASE_URL}/products`, {
-          cache: "no-store",
-        });
+        const res = await fetch(`${API_BASE_URL}/products`, { cache: "no-store" });
         const data = await res.json();
         setProducts(data);
         setFilteredProducts(data);
@@ -49,93 +56,164 @@ export default function ProductsPage() {
     fetchProducts();
   }, []);
 
-  // Filters
+  // 🟢 autosuggest while typing
   useEffect(() => {
-    let filtered = [...products];
-
-    if (searchTerm) {
-      const term = searchTerm.toLowerCase();
-      filtered = filtered.filter(
-        (p) =>
-          p.name.toLowerCase().includes(term) ||
-          p.part_number?.toLowerCase().includes(term)
-      );
+    if (!searchTerm.trim()) {
+      setSuggestions([]);
+      return;
     }
 
+    const delay = setTimeout(async () => {
+      try {
+        const url = `${API_BASE_URL.replace("/api", "")}/search/suggest?q=${encodeURIComponent(searchTerm)}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        setSuggestions(data.hits || []);
+      } catch (err) {
+        console.error("Suggest error:", err);
+      }
+    }, 250);
+
+    return () => clearTimeout(delay);
+  }, [searchTerm]);
+
+  // 🟢 Meilisearch search results (NO direct setFilteredProducts here)
+  useEffect(() => {
+    const fetchSearch = async () => {
+      if (!searchTerm.trim()) {
+        setSearchResults([]);
+        return;
+      }
+
+      try {
+        const url = `${API_BASE_URL.replace("/api", "")}/search/products?q=${encodeURIComponent(searchTerm)}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        setSearchResults(data.hits || []);
+      } catch (err) {
+        console.error("Search error:", err);
+      }
+    };
+
+    fetchSearch();
+  }, [searchTerm]);
+
+  // 🟢 final reducer → calculates visible products
+  useEffect(() => {
+    let updated = searchResults.length > 0 ? [...searchResults] : [...products];
+
     if (category) {
-      filtered = filtered.filter((p) => p.category === category);
+      updated = updated.filter((p) => p.category === category);
     }
 
     if (priceSort === "low-high") {
-      filtered.sort((a, b) => a.price - b.price);
+      updated.sort((a, b) => a.price - b.price);
     } else if (priceSort === "high-low") {
-      filtered.sort((a, b) => b.price - a.price);
+      updated.sort((a, b) => b.price - a.price);
     }
 
-    setFilteredProducts(filtered);
-  }, [searchTerm, category, priceSort, products]);
+    setFilteredProducts(updated);
+  }, [products, searchResults, category, priceSort]);
+
+  // 🔥 click outside closes suggestions
+  useEffect(() => {
+    const close = () => setSuggestions([]);
+    document.addEventListener("click", close);
+    return () => document.removeEventListener("click", close);
+  }, []);
 
   const clearFilters = () => {
     setSearchTerm("");
     setCategory("");
     setPriceSort("");
+    setSearchResults([]); // reset search results
+    setSuggestions([]);
     setFilteredProducts(products);
   };
 
-  // Add to cart only if logged in
   const handleAddToCart = (product: Product) => {
-    if (!isSignedIn) return; // Prevent unauth users
+    if (!isSignedIn) return;
     addToCart({ ...product, quantity: 1 });
     toastCartAdd(product.name, 1);
+  };
+
+  // suggestion click
+  const applySuggestion = (name: string) => {
+    setSearchTerm(name);
+    setSuggestions([]);
   };
 
   return (
     <main className="min-h-screen bg-gray-50 py-10 px-6 md:px-16">
       {/* Banner */}
       <section className="relative w-full h-[300px] md:h-[400px] mb-10">
-        <Image
-          src="/product_banner.png"
-          alt="Products Banner"
-          width={1100}
-          height={200}
-          className="rounded-lg object-cover"
-        />
+        <Image src="/product_banner.png" alt="Products Banner" width={1100} height={200}
+          className="rounded-lg object-cover" />
       </section>
 
-      {/* Filters */}
+      {/* Search + Filters */}
       <div className="flex flex-col md:flex-row items-center gap-4 mb-10 justify-between search-filter-bar">
-        <input
-          type="text"
-          placeholder="Search by name or part number..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="border border-gray-300 rounded-lg px-4 py-2 w-full md:w-1/3"
-        />
+        {/* Search Box */}
+        <div className="relative w-full md:w-1/3">
+          <input
+            type="text"
+            placeholder="Search by name or part number..."
+            value={searchTerm}
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+              setActiveIndex(-1);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "ArrowDown") {
+                setActiveIndex((prev) => Math.min(prev + 1, suggestions.length - 1));
+              }
+              if (e.key === "ArrowUp") {
+                setActiveIndex((prev) => Math.max(prev - 1, 0));
+              }
+              if (e.key === "Enter" && activeIndex >= 0) {
+                applySuggestion(suggestions[activeIndex].name);
+              }
+            }}
+            className="border border-gray-300 rounded-lg px-4 py-2 w-full"
+          />
 
-        <select
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          className="border border-gray-300 rounded-lg px-4 py-2 category-filter-select"
-        >
+          {/* Suggestions */}
+          {suggestions.length > 0 && (
+            <ul className="absolute bg-white z-50 w-full border rounded-lg shadow mt-1 max-h-64 overflow-auto text-black">
+              {suggestions.map((s, i) => (
+                <li
+                  key={s.id}
+                  onClick={() => applySuggestion(s.name)}
+                  className={`px-4 py-2 cursor-pointer ${
+                    activeIndex === i ? "bg-gray-200" : "hover:bg-gray-200"
+                  }`}
+                  dangerouslySetInnerHTML={{
+                    __html: highlightMatch(s.name, searchTerm) +
+                      ` <span class='text-gray-500 text-sm'>(${s.part_number})</span>`,
+                  }}
+                />
+              ))}
+            </ul>
+          )}
+        </div>
+
+        {/* Filters */}
+        <select value={category} onChange={(e) => setCategory(e.target.value)}
+          className="border border-gray-300 rounded-lg px-4 py-2 category-filter-select">
           <option value="">All Categories</option>
           <option value="Jaguar">Jaguar</option>
           <option value="Range Rover">Range Rover</option>
         </select>
 
-        <select
-          value={priceSort}
-          onChange={(e) => setPriceSort(e.target.value)}
-          className="border border-gray-300 rounded-lg px-4 py-2 price_sort-select"
-        >
+        <select value={priceSort} onChange={(e) => setPriceSort(e.target.value)}
+          className="border border-gray-300 rounded-lg px-4 py-2 price_sort-select">
           <option value="">Sort by</option>
           <option value="low-high">Price: Low → High</option>
           <option value="high-low">Price: High → Low</option>
         </select>
 
-        <button
-          onClick={clearFilters}
-          className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg cursor-pointer"
-        >
+        <button onClick={clearFilters}
+          className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg">
           Clear Filters
         </button>
       </div>
@@ -148,52 +226,30 @@ export default function ProductsPage() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {filteredProducts.map((product) => (
-            <div
-              key={product.id}
-              className="bg-white p-4 rounded-xl shadow hover:shadow-lg transition flex flex-col"
-            >
-              <div
-                className="relative w-full h-56 mb-4 cursor-pointer"
-                onClick={() => setSelectedProduct(product)}
-              >
-                <Image
-                  src={product.image || "/placeholder.png"}
-                  alt={product.name}
-                  width={200}
-                  height={200}
-                  className="object-cover rounded-lg"
-                />
+            <div key={product.id}
+              className="bg-white p-4 rounded-xl shadow hover:shadow-lg transition flex flex-col">
+              <div className="relative w-full h-56 mb-4 cursor-pointer"
+                onClick={() => setSelectedProduct(product)}>
+                <Image src={product.image || "/placeholder.png"} alt={product.name}
+                  width={200} height={200} className="object-cover rounded-lg" />
               </div>
 
-              <h3 className="text-lg font-medium text-gray-900">
-                {product.name}
-              </h3>
+              <h3 className="text-lg font-medium text-gray-900">{product.name}</h3>
 
-              {/* 🔒 PRICE LOCKED WHEN NOT LOGGED IN */}
               {!isSignedIn ? (
-                <p className="text-gray-600">
-                  Login to view price
-                </p>
+                <p className="text-gray-600">Login to view price</p>
               ) : (
                 <p className="text-gray-600">${product.price}</p>
               )}
 
-              <p className="text-sm text-gray-500">
-                Part No: {product.part_number}
-              </p>
+              <p className="text-sm text-gray-500">Part No: {product.part_number}</p>
               <p className="text-sm text-gray-500 mb-4">{product.category}</p>
 
               <div className="mt-auto flex gap-2">
-                {/* 🔒 Add to Cart button disabled when not logged in */}
                 {!isSignedIn ? (
-                  
-                    <button
-                      onClick={() => null}
-                      className="flex-1 bg-gray-400 text-white rounded-lg cursor-not-allowed"
-                    >
-                      Login required
-                    </button>
-                  
+                  <button className="flex-1 bg-gray-400 text-white rounded-lg cursor-not-allowed">
+                    Login required
+                  </button>
                 ) : (
                   <button
                     onClick={() => handleAddToCart(product)}
@@ -216,10 +272,7 @@ export default function ProductsPage() {
       )}
 
       {selectedProduct && (
-        <ProductDetailModal
-          product={selectedProduct}
-          onClose={() => setSelectedProduct(null)}
-        />
+        <ProductDetailModal product={selectedProduct} onClose={() => setSelectedProduct(null)} />
       )}
     </main>
   );
