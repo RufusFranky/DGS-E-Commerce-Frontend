@@ -118,6 +118,7 @@ export default function MyQuotesPage() {
       items.forEach((it) => {
         addToCart({
           id: it.id ?? Math.floor(Math.random() * 1_000_000),
+          part_number: it.part_number, // ← added
           name: it.name || it.part_number,
           price: it.price || 0,
           image: productImages[it.name || it.part_number] || "/no-image.png",

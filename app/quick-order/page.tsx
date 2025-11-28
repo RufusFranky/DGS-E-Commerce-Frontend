@@ -151,13 +151,14 @@ export default function QuickOrderPage() {
   const addSingleToCart = () => {
     if (!singleResult || !singleResult.product) return;
     const p = singleResult.product;
-    addToCart({
-      id: p.id,
-      name: p.name || p.part_number,
-      price: p.price || 0,
-      image: p.image || "/placeholder.png",
-      quantity: singleQty,
-    });
+addToCart({
+  id: p.id,
+  part_number: p.part_number, // ← added
+  name: p.name || p.part_number,
+  price: p.price || 0,
+  image: p.image || "/placeholder.png",
+  quantity: singleQty,
+});
     toastCartAdd(p.name || p.part_number, singleQty);
     resetSingle();
   };
@@ -232,13 +233,14 @@ export default function QuickOrderPage() {
     let addedCount = 0;
     bulkValidated.forEach((b) => {
       if (b.product) {
-        addToCart({
-          id: b.product.id,
-          name: b.product.name || b.product.part_number,
-          price: b.product.price || 0,
-          image: b.product.image || "/placeholder.png",
-          quantity: b.qty,
-        });
+addToCart({
+  id: b.product.id,
+  part_number: b.product.part_number, // ← added
+  name: b.product.name || b.product.part_number,
+  price: b.product.price || 0,
+  image: b.product.image || "/placeholder.png",
+  quantity: singleQty,
+});
         addedCount += 1;
       }
     });
@@ -347,13 +349,14 @@ export default function QuickOrderPage() {
     let addedCount = 0;
     pasteValidated.forEach((b) => {
       if (b.product) {
-        addToCart({
-          id: b.product.id,
-          name: b.product.name || b.product.part_number,
-          price: b.product.price || 0,
-          image: b.product.image || "/placeholder.png",
-          quantity: b.qty,
-        });
+addToCart({
+  id: b.product.id,
+  part_number: b.product.part_number, // ← added
+  name: b.product.name || b.product.part_number,
+  price: b.product.price || 0,
+  image: b.product.image || "/placeholder.png",
+  quantity: singleQty,
+});
         addedCount += 1;
       }
     });
@@ -657,12 +660,13 @@ export default function QuickOrderPage() {
                               onClick={() => {
                                 addToCart({
                                   id: b.product!.id,
-                                  name:
-                                    b.product!.name || b.product!.part_number,
+                                  part_number: b.product!.part_number,
+                                  name: b.product!.name || b.product!.part_number,
                                   price: b.product!.price || 0,
                                   image: b.product!.image || "/placeholder.png",
                                   quantity: b.qty,
                                 });
+                                
                               }}
                               className="bg-green-600 text-white px-3 py-1 rounded cursor-pointer"
                             >
@@ -759,10 +763,10 @@ export default function QuickOrderPage() {
                           {b.product ? (
                             <button
                               onClick={() => {
-                                addToCart({
+                                 addToCart({
                                   id: b.product!.id,
-                                  name:
-                                    b.product!.name || b.product!.part_number,
+                                  part_number: b.product!.part_number,
+                                  name: b.product!.name || b.product!.part_number,
                                   price: b.product!.price || 0,
                                   image: b.product!.image || "/placeholder.png",
                                   quantity: b.qty,

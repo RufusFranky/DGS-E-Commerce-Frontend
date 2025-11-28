@@ -28,8 +28,11 @@ type Quote = {
   created_at: string;
 };
 
-export default function QuoteViewPage({ params,}: { params: Promise<{ token: string }>;}) {
-    
+export default function QuoteViewPage({
+  params,
+}: {
+  params: Promise<{ token: string }>;
+}) {
   const router = useRouter();
   const { addToCart } = useCart();
 
@@ -80,6 +83,7 @@ export default function QuoteViewPage({ params,}: { params: Promise<{ token: str
     items.forEach((it) => {
       addToCart({
         id: it.id ?? Math.floor(Math.random() * 1_000_000),
+        part_number: it.part_number, // ← added
         name: it.name || it.part_number,
         price: it.price || 0,
         image: productImages[it.name || it.part_number] || "/no-image.png",
@@ -112,9 +116,7 @@ export default function QuoteViewPage({ params,}: { params: Promise<{ token: str
       <div className="max-w-5xl mx-auto">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-2xl font-bold">
-              {quote.quote_number}
-            </h1>
+            <h1 className="text-2xl font-bold">{quote.quote_number}</h1>
             <div className="text-sm text-gray-500">
               Created: {new Date(quote.created_at).toLocaleString()}
             </div>
