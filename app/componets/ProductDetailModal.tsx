@@ -30,6 +30,7 @@ export default function ProductDetailModal({ product, onClose }: ProductDetailMo
       id: product.id,
       name: product.name,
       price: product.price,
+      part_number: product.part_number,
       image: product.image,
       quantity: 1,
     });
