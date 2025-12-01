@@ -5,6 +5,7 @@ import { CartProvider } from "./context/CartContext";
 import Footer from "./componets/Footer";
 import { Providers } from "./providers";
 import { Toaster } from "react-hot-toast";
+import Breadcrumbs from "./componets/Breadcrumbs";
 
 export const metadata = {
   title: "DGSTECH",
@@ -25,6 +26,9 @@ export default function RootLayout({
         <Providers>
           <CartProvider>
             <Navbar />
+            <div className="px-6 md:px-10">
+              <Breadcrumbs />
+            </div>
             <main>{children}</main>
             <Toaster
               position="bottom-right"
