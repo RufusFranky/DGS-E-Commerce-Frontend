@@ -7,6 +7,9 @@ import { API_BASE_URL } from "@/utils/api";
 import ProductDetailModal from "./../componets/ProductDetailModal";
 import { toastCartAdd } from "@/utils/toast";
 import { useUser } from "@clerk/nextjs";
+import { useWishlist } from "../context/wishlistContext";
+import { IoMdHeartEmpty } from "react-icons/io";
+import { IoMdHeart } from "react-icons/io";
 
 interface Product {
   id: number;
@@ -30,7 +33,7 @@ export default function ProductsPage() {
 
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-  const [searchResults, setSearchResults] = useState<Product[]>([]); // 🆕
+  const [searchResults, setSearchResults] = useState<Product[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [suggestions, setSuggestions] = useState<Product[]>([]);
   const [activeIndex, setActiveIndex] = useState(-1);
@@ -38,12 +41,15 @@ export default function ProductsPage() {
   const [priceSort, setPriceSort] = useState("");
   const [loading, setLoading] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
 
   // 🟢 load all products
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch(`${API_BASE_URL}/products`, { cache: "no-store" });
+        const res = await fetch(`${API_BASE_URL}/products`, {
+          cache: "no-store",
+        });
         const data = await res.json();
         setProducts(data);
         setFilteredProducts(data);
@@ -65,7 +71,10 @@ export default function ProductsPage() {
 
     const delay = setTimeout(async () => {
       try {
-        const url = `${API_BASE_URL.replace("/api", "")}/search/suggest?q=${encodeURIComponent(searchTerm)}`;
+        const url = `${API_BASE_URL.replace(
+          "/api",
+          ""
+        )}/search/suggest?q=${encodeURIComponent(searchTerm)}`;
         const res = await fetch(url);
         const data = await res.json();
         setSuggestions(data.hits || []);
@@ -77,7 +86,7 @@ export default function ProductsPage() {
     return () => clearTimeout(delay);
   }, [searchTerm]);
 
-  // 🟢 Meilisearch search results (NO direct setFilteredProducts here)
+  // 🟢 Meilisearch search results
   useEffect(() => {
     const fetchSearch = async () => {
       if (!searchTerm.trim()) {
@@ -86,7 +95,10 @@ export default function ProductsPage() {
       }
 
       try {
-        const url = `${API_BASE_URL.replace("/api", "")}/search/products?q=${encodeURIComponent(searchTerm)}`;
+        const url = `${API_BASE_URL.replace(
+          "/api",
+          ""
+        )}/search/products?q=${encodeURIComponent(searchTerm)}`;
         const res = await fetch(url);
         const data = await res.json();
         setSearchResults(data.hits || []);
@@ -98,7 +110,7 @@ export default function ProductsPage() {
     fetchSearch();
   }, [searchTerm]);
 
-  // 🟢 final reducer → calculates visible products
+  // 🟢 final reducer
   useEffect(() => {
     let updated = searchResults.length > 0 ? [...searchResults] : [...products];
 
@@ -126,7 +138,7 @@ export default function ProductsPage() {
     setSearchTerm("");
     setCategory("");
     setPriceSort("");
-    setSearchResults([]); // reset search results
+    setSearchResults([]);
     setSuggestions([]);
     setFilteredProducts(products);
   };
@@ -137,7 +149,6 @@ export default function ProductsPage() {
     toastCartAdd(product.name, 1);
   };
 
-  // suggestion click
   const applySuggestion = (name: string) => {
     setSearchTerm(name);
     setSuggestions([]);
@@ -147,8 +158,13 @@ export default function ProductsPage() {
     <main className="min-h-screen bg-gray-50 py-10 px-6 md:px-16">
       {/* Banner */}
       <section className="relative w-full h-[300px] md:h-[400px] mb-10">
-        <Image src="/product_banner.png" alt="Products Banner" width={1100} height={200}
-          className="rounded-lg object-cover" />
+        <Image
+          src="/product_banner.png"
+          alt="Products Banner"
+          width={1100}
+          height={200}
+          className="rounded-lg object-cover"
+        />
       </section>
 
       {/* Search + Filters */}
@@ -165,7 +181,9 @@ export default function ProductsPage() {
             }}
             onKeyDown={(e) => {
               if (e.key === "ArrowDown") {
-                setActiveIndex((prev) => Math.min(prev + 1, suggestions.length - 1));
+                setActiveIndex((prev) =>
+                  Math.min(prev + 1, suggestions.length - 1)
+                );
               }
               if (e.key === "ArrowUp") {
                 setActiveIndex((prev) => Math.max(prev - 1, 0));
@@ -188,7 +206,8 @@ export default function ProductsPage() {
                     activeIndex === i ? "bg-gray-200" : "hover:bg-gray-200"
                   }`}
                   dangerouslySetInnerHTML={{
-                    __html: highlightMatch(s.name, searchTerm) +
+                    __html:
+                      highlightMatch(s.name, searchTerm) +
                       ` <span class='text-gray-500 text-sm'>(${s.part_number})</span>`,
                   }}
                 />
@@ -198,22 +217,30 @@ export default function ProductsPage() {
         </div>
 
         {/* Filters */}
-        <select value={category} onChange={(e) => setCategory(e.target.value)}
-          className="border border-gray-300 rounded-lg px-4 py-2 category-filter-select">
+        <select
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          className="border border-gray-300 rounded-lg px-4 py-2 category-filter-select"
+        >
           <option value="">All Categories</option>
           <option value="Jaguar">Jaguar</option>
           <option value="Range Rover">Range Rover</option>
         </select>
 
-        <select value={priceSort} onChange={(e) => setPriceSort(e.target.value)}
-          className="border border-gray-300 rounded-lg px-4 py-2 price_sort-select">
+        <select
+          value={priceSort}
+          onChange={(e) => setPriceSort(e.target.value)}
+          className="border border-gray-300 rounded-lg px-4 py-2 price_sort-select"
+        >
           <option value="">Sort by</option>
           <option value="low-high">Price: Low → High</option>
           <option value="high-low">Price: High → Low</option>
         </select>
 
-        <button onClick={clearFilters}
-          className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg">
+        <button
+          onClick={clearFilters}
+          className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg"
+        >
           Clear Filters
         </button>
       </div>
@@ -226,15 +253,42 @@ export default function ProductsPage() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {filteredProducts.map((product) => (
-            <div key={product.id}
-              className="bg-white p-4 rounded-xl shadow hover:shadow-lg transition flex flex-col">
-              <div className="relative w-full h-56 mb-4 cursor-pointer"
-                onClick={() => setSelectedProduct(product)}>
-                <Image src={product.image || "/placeholder.png"} alt={product.name}
-                  width={200} height={200} className="object-cover rounded-lg" />
+            <div
+              key={product.id}
+              className="bg-white p-4 rounded-xl shadow hover:shadow-lg transition flex flex-col relative"
+            >
+              {/* Heart Icon */}
+              <button
+                onClick={() =>
+                  isInWishlist(String(product.id))
+                    ? removeFromWishlist(String(product.id))
+                    : addToWishlist(String(product.id))
+                }
+                className="absolute top-3 right-3 z-10 text-red-500 text-[26px] cursor-pointer"
+              >
+                {isInWishlist(String(product.id)) ? (
+                  <IoMdHeart className="text-red-600" />
+                ) : (
+                  <IoMdHeartEmpty className="text-gray-600 hover:text-red-600 transition" />
+                )}
+              </button>
+
+              <div
+                className="relative w-full h-56 mb-4 cursor-pointer"
+                onClick={() => setSelectedProduct(product)}
+              >
+                <Image
+                  src={product.image || "/placeholder.png"}
+                  alt={product.name}
+                  width={200}
+                  height={200}
+                  className="object-cover rounded-lg"
+                />
               </div>
 
-              <h3 className="text-lg font-medium text-gray-900">{product.name}</h3>
+              <h3 className="text-lg font-medium text-gray-900">
+                {product.name}
+              </h3>
 
               {!isSignedIn ? (
                 <p className="text-gray-600">Login to view price</p>
@@ -242,7 +296,9 @@ export default function ProductsPage() {
                 <p className="text-gray-600">${product.price}</p>
               )}
 
-              <p className="text-sm text-gray-500">Part No: {product.part_number}</p>
+              <p className="text-sm text-gray-500">
+                Part No: {product.part_number}
+              </p>
               <p className="text-sm text-gray-500 mb-4">{product.category}</p>
 
               <div className="mt-auto flex gap-2">
@@ -272,7 +328,10 @@ export default function ProductsPage() {
       )}
 
       {selectedProduct && (
-        <ProductDetailModal product={selectedProduct} onClose={() => setSelectedProduct(null)} />
+        <ProductDetailModal
+          product={selectedProduct}
+          onClose={() => setSelectedProduct(null)}
+        />
       )}
     </main>
   );

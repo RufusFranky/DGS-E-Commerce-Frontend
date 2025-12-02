@@ -6,6 +6,7 @@ import Footer from "./componets/Footer";
 import { Providers } from "./providers";
 import { Toaster } from "react-hot-toast";
 import Breadcrumbs from "./componets/Breadcrumbs";
+import { WishlistProvider } from "./context/wishlistContext";
 
 export const metadata = {
   title: "DGSTECH",
@@ -25,38 +26,40 @@ export default function RootLayout({
       >
         <Providers>
           <CartProvider>
-            <Navbar />
-            <div className="px-6 md:px-10">
-              <Breadcrumbs />
-            </div>
-            <main>{children}</main>
-            <Toaster
-              position="bottom-right"
-              gutter={12}
-              toastOptions={{
-                duration: 3000,
-                style: {
-                  background: "#1e1e1e",
-                  color: "#fff",
-                  borderRadius: "10px",
-                  padding: "12px 16px",
-                  fontSize: "14px",
-                  marginBottom: "50px",
-                },
-                success: {
-                  iconTheme: {
-                    primary: "#4ade80",
-                    secondary: "white",
+            <WishlistProvider>
+              <Navbar />
+              <div className="px-6 md:px-10">
+                <Breadcrumbs />
+              </div>
+              <main>{children}</main>
+              <Toaster
+                position="bottom-right"
+                gutter={12}
+                toastOptions={{
+                  duration: 3000,
+                  style: {
+                    background: "#1e1e1e",
+                    color: "#fff",
+                    borderRadius: "10px",
+                    padding: "12px 16px",
+                    fontSize: "14px",
+                    marginBottom: "50px",
                   },
-                },
-                error: {
-                  iconTheme: {
-                    primary: "#ef4444",
-                    secondary: "white",
+                  success: {
+                    iconTheme: {
+                      primary: "#4ade80",
+                      secondary: "white",
+                    },
                   },
-                },
-              }}
-            />
+                  error: {
+                    iconTheme: {
+                      primary: "#ef4444",
+                      secondary: "white",
+                    },
+                  },
+                }}
+              />
+            </WishlistProvider>
           </CartProvider>
           <Footer />
         </Providers>

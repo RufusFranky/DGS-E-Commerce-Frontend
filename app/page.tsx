@@ -4,6 +4,8 @@ import Carousel from "./componets/Carousel";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { API_BASE_URL } from "@/utils/api";
+import CategoriesMarquee from "./componets/CategoriesMarquee";
+import OurSpecs from "./componets/OurSpec";
 
 interface Product {
   id: number;
@@ -41,6 +43,7 @@ export default function Home() {
     <main className="min-h-screen bg-gray-50">
       {/* Carousel Section */}
       <Carousel />
+      <CategoriesMarquee />
 
       {/* Featured Products Section */}
       <section className="py-16 px-6 md:px-16">
@@ -81,6 +84,7 @@ export default function Home() {
           </div>
         )}
       </section>
+      <OurSpecs />
     </main>
   );
 }

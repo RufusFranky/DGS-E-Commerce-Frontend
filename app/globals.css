@@ -286,3 +286,16 @@ select {
 .bread_links{
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
+.wishlsit_div{
+  width: 60%;
+  margin: auto;
+}
+.heart_icon{
+  font-size: 24px;
+  color: #0c4395;
+}
+
+.red_heart{
+  font-size: 24px;
+  color: red;
+}
