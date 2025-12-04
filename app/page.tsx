@@ -6,6 +6,9 @@ import { useEffect, useState } from "react";
 import { API_BASE_URL } from "@/utils/api";
 import CategoriesMarquee from "./componets/CategoriesMarquee";
 import OurSpecs from "./componets/OurSpec";
+import Rating from '@/app/componets/Rating';
+import RatingModal from '@/app/componets/RatingModal';
+import { useUser } from "@clerk/nextjs";
 
 interface Product {
   id: number;
@@ -19,8 +22,11 @@ interface Product {
 
 export default function Home() {
   const router = useRouter();
+  const { user } = useUser();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [ratingModal, setRatingModal] = useState<boolean | null>(null);
+  const [selectedProductId] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -73,6 +79,10 @@ export default function Home() {
                   {product.name}
                 </h3>
                 <p className="text-gray-600">{product.category}</p>
+           
+                <div className="mt-2">
+                  <Rating value={4} />
+                </div>
                 <button
                   onClick={() => router.push(`/products`)}
                   className="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition ShopNow_btn cursor-pointer" 
@@ -85,6 +95,19 @@ export default function Home() {
         )}
       </section>
       <OurSpecs />
+      {/* ⭐ Rating Modal Rendering */}
+      {ratingModal && selectedProductId && user?.id && (
+        <RatingModal
+          ratingModal={ratingModal}
+          setRatingModal={setRatingModal}
+          productId={selectedProductId}
+          userId={user.id}
+          onReviewSubmitted={() => {
+            // optional: refresh logic if needed
+            console.log("Review submitted for product:", selectedProductId);
+          }}
+        />
+      )}
     </main>
   );
 }

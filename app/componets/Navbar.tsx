@@ -76,6 +76,7 @@ const wishlistCount = wishlist.length;
           <a href="./contact" className="nav_links">
             Contact
           </a>
+          <a href="./admin" className="nav_links">Admin</a>
         </div>
 
         {/* Right items (cart + clerk) */}
@@ -183,6 +184,7 @@ const wishlistCount = wishlist.length;
             <a href="./contact" className="nav_links text-lg">
               Contact
             </a>
+            <a href="./admin" className="nav_links">Admin</a>
           </div>
         </div>
       </nav>
