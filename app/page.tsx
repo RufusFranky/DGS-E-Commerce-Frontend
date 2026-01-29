@@ -27,15 +27,20 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [ratingModal, setRatingModal] = useState<boolean | null>(null);
   const [selectedProductId] = useState<number | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<"Jaguar" | "Range Rover">("Jaguar");
 
   useEffect(() => {
     const fetchProducts = async () => {
+      setLoading(true);
       try {
-        const res = await fetch(`${API_BASE_URL}/products`, {
-          cache: "no-store",
-        });
+        const res = await fetch(
+          `${API_BASE_URL}/products?category=${encodeURIComponent(
+            selectedCategory
+          )}`,
+          { cache: "no-store" }
+        );
         const data = await res.json();
-        setProducts(data.slice(0, 4));
+        setProducts(data);
       } catch (err) {
         console.error("Error fetching products:", err);
       } finally {
@@ -43,7 +48,9 @@ export default function Home() {
       }
     };
     fetchProducts();
-  }, []);
+  }, [selectedCategory]);
+
+  const featuredProducts = products.slice(0, 4);
 
   return (
     <main className="min-h-screen bg-gray-50">
@@ -53,15 +60,37 @@ export default function Home() {
 
       {/* Featured Products Section */}
       <section className="py-16 px-6 md:px-16">
-        <h2 className="text-3xl font-semibold text-center mb-10 featured-products-heading">
-          Featured Products
-        </h2>
+        <div className="flex flex-col items-center gap-4 mb-10">
+          <h2 className="text-3xl font-semibold text-center featured-products-heading">
+            Featured Products
+          </h2>
+          <div className="flex items-center gap-3">
+            <label htmlFor="featured-category" className="text-gray-700">
+              Category
+            </label>
+            <select
+              id="featured-category"
+              value={selectedCategory}
+              onChange={(e) =>
+                setSelectedCategory(e.target.value as "Jaguar" | "Range Rover")
+              }
+              className="border border-gray-300 rounded-lg px-4 py-2 category-filter-select"
+            >
+              <option value="Jaguar">Jaguar</option>
+              <option value="Range Rover">Range Rover</option>
+            </select>
+          </div>
+        </div>
 
         {loading ? (
           <p className="text-center text-gray-600">Loading products...</p>
+        ) : featuredProducts.length === 0 ? (
+          <p className="text-center text-gray-600">
+            No products found for {selectedCategory}.
+          </p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            {products.map((product) => (
+            {featuredProducts.map((product) => (
               <div
                 key={product.id}
                 className="bg-white p-4 rounded-xl shadow hover:shadow-lg transition"
